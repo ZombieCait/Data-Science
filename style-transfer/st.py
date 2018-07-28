@@ -411,7 +411,7 @@ def style_transfer(content_image, style_image,
         print(". ", end="")
 
         # Display status once every 10 iterations, and the last.
-        if (i % 10 == 0) or (i == num_iterations - 1):
+        if (i % 30 == 0) or (i == num_iterations - 1):
             print()
             print("Iteration:", i)
 
@@ -424,7 +424,7 @@ def style_transfer(content_image, style_image,
             plot_images(content_image=content_image,
                         style_image=style_image,
                         mixed_image=mixed_image)
-
+            save_image(mixed_image, 'result/1.jpg')
     print()
     print("Final image:")
     plot_image_big(mixed_image)
@@ -435,11 +435,11 @@ def style_transfer(content_image, style_image,
     # Return the mixed-image.
     return mixed_image
 
-content_filename='image/mill.jpg'
-content_image = load_image(content_filename, max_size=None)
+content_filename='image/chicago.jpg'
+content_image = load_image(content_filename, max_size=600)
 
-style_filename='style/tulpany.jpg'
-style_image=load_image(style_filename, max_size=300)
+style_filename='image/the_scream.jpg'
+style_image=load_image(style_filename, max_size=600)
 
 content_layer_ids = [4]
 style_layer_ids = list(range(13))
@@ -448,9 +448,10 @@ img = style_transfer(content_image=content_image,
                      style_image=style_image,
                      content_layer_ids=content_layer_ids,
                      style_layer_ids=style_layer_ids,
-                     weight_content=1.5,
-                     weight_style=10.0,
-                     weight_denoise=0.3,
-                     num_iterations=60,
-                     step_size=10.0)
+                     weight_content=7.5e0,
+                     weight_style=1e2,
+                     weight_denoise=0.6,
+                     num_iterations=1000,
+                     step_size=8.0)
+save_image(img, 'result/wave_stata.jpg')
 

@@ -1,12 +1,12 @@
 from IPython.display import Image, display
 Image('image/mill.jpg')
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import PIL.Image
 import vgg16
 
-#vgg16.data_dir = 'F:/vgg16/'
+vgg16.data_dir = 'vgg16/'
 #vgg16.maybe_download()
 
 def load_image(filename, max_size=None):
@@ -32,6 +32,7 @@ def plot_image_big(image):
     image = np.clip(image, 0.0, 255.0)
     image = image.astype(np.uint8)
     display(PIL.Image.fromarray(image))
+
 
 def plot_images(content_image, style_image, mixed_image):
     fig, axes = plot.subplots(1, 3, figsize=(10, 10))
@@ -253,11 +254,10 @@ def style_transfer(content_image, style_image,
     # Return the mixed-image.
     return mixed_image
 
-
-content_filename='image/mill.jpg'
+content_filename='image/willy_wonka_new.jpg'
 content_image = load_image(content_filename, max_size=None)
 
-style_filename='style/tulpany.jpg'
+style_filename='style/style5.jpg'
 style_image=load_image(style_filename, max_size=300)
 
 content_layer_ids = [4]
@@ -272,3 +272,4 @@ img = style_transfer(content_image=content_image,
                      weight_denoise=0.3,
                      num_iterations=60,
                      step_size=10.0)
+

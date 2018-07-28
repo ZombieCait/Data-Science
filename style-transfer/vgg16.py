@@ -39,6 +39,7 @@ class VGG16:
 
             # Open the graph-def file for binary reading.
             path = os.path.join(data_dir, path_graph_def)
+
             with tf.gfile.FastGFile(path, 'rb') as file:
                 # The graph-def is a saved copy of a TensorFlow graph.
                 # First we need to create an empty graph-def.
@@ -51,6 +52,7 @@ class VGG16:
                 tf.import_graph_def(graph_def, name='')
 
                 # Now self.graph holds the VGG16 model from the proto-buf file.
+
 
             # Get a reference to the tensor for inputting images to the graph.
             self.input = self.graph.get_tensor_by_name(self.tensor_name_input_image)
