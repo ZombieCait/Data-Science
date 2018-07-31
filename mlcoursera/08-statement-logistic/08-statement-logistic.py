@@ -17,12 +17,12 @@ X = data[[1, 2]]
 
 def get_w(w1, w2, X, y, k, C, flag=1):
     l = len(y)
-    summ = 1- 1/(1+ np.exp(-y * (w1*X[1]+w2*X[2])))
+    summ = 1- 1/(1+ np.exp(-1 * y * (w1*X[1]+w2*X[2])))
     if flag==1:
-       w1 = w1 + k * 1/l*summ - k*C*w1
+       w1 = w1 + k * 1/l*y*X[1]*summ - k*C*w1
        return w1
     else:
-       w2 = w2 + k * 1/l *summ - k*C*w2
+       w2 = w2 + k * 1/l*y*X[2] *summ - k*C*w2
        return w2    
 
 #3. Реализуйте градиентный спуск для обычной и L2-регуляризованной
@@ -35,7 +35,7 @@ def gradient_descent(y, X, C=0.0, w1=0.0, w2=0.0, k=0.1, err=1e-5):
     w1_new, w2_new = w1, w2
 
     for i in range(max_iteration):
-        w1_new, w2_new = get_w(w1, w2, X, y, k, C), get_w(w1, w2, X, y, k, C, flag=2)
+        w1_new, w2_new = get_w(w1, w2, X, y, k, C, flag=1), get_w(w1, w2, X, y, k, C, flag=2)
         e = np.sqrt((w1_new - w1) ** 2 + (w2_new - w2) ** 2)[0]
         print(e)
         print(err)
