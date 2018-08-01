@@ -1,6 +1,6 @@
 # coding=utf-8
 import pandas as pd
-from sklearn.metrics import classification_report, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.metrics import classification_report, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, precision_recall_curve
 
 # 1. Загрузите файл classification.csv. В нем записаны истинные классы объектов выборки (колонка true) и ответы
 # некоторого классификатора (колонка predicted).
@@ -53,3 +53,10 @@ open('3.txt', 'w').write(clf_aucs.sort_values(by=1, ascending=False).head(1)[0][
 # thresholds. Найдите максимальной значение точности среди тех записей, для которых полнота не меньше, чем 0.7.
 
 
+clf_precisions=pd.DataFrame()
+for clf in scores.columns[1:]:
+    pr=precision_recall_curve(scores['true'], scores[clf])
+    pr=pd.DataFrame({'precision':pr[0], 'recall':pr[1]})
+    clf_precisions=clf_precisions.append([[clf, pr[pr['recall']>=0.7]['precision'].max()]])
+
+open('4.txt', 'w').write(clf_precisions.sort_values(by=1, ascending=False).head(1)[0][0])
