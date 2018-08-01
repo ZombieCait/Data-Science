@@ -15,15 +15,23 @@ X = data[[1, 2]]
 #    градиентного спуска. Обратите внимание, что мы используем
 #    полноценный градиентный спуск, а не его стохастический вариант!
 
-def get_w(w1, w2, X, y, k, C, flag=1):
+def get_w1(w1, w2, X,  y, k, C):
     l = len(y)
-    summ = 1- 1/(1+ np.exp(-1 * y * (w1*X[1]+w2*X[2])))
-    if flag==1:
-       w1 = w1 + k * 1/l*y*X[1]*summ - k*C*w1
-       return w1
-    else:
-       w2 = w2 + k * 1/l*y*X[2] *summ - k*C*w2
-       return w2    
+    summ = 0
+    for i in range(0, l):
+        summ += y[i] * X[1][i] * (1.0 - 1.0 / (1.0 + np.exp(-y[i] * (w1*X[1][i] + w2*X[2][i]))))
+
+    return w1 + (k * (1.0 / l) * summ) - k * C * w1
+
+
+def get_w2(w1, w2, X, y, k, C):
+    l = len(y)
+    summ = 0
+    for i in range(0, l):
+        summ += y[i] * X[2][i] * (1.0 - 1.0 / (1.0 + np.exp(-y[i] * (w1*X[1][i] + w2*X[2][i]))))
+
+    return w2 + (k * (1.0 / l) * summ) - k * C * w2
+
 
 #3. Реализуйте градиентный спуск для обычной и L2-регуляризованной
 #   (с коэффициентом регуляризации 10) логистической регрессии.
@@ -35,10 +43,9 @@ def gradient_descent(y, X, C=0.0, w1=0.0, w2=0.0, k=0.1, err=1e-5):
     w1_new, w2_new = w1, w2
 
     for i in range(max_iteration):
-        w1_new, w2_new = get_w(w1, w2, X, y, k, C, flag=1), get_w(w1, w2, X, y, k, C, flag=2)
-        e = np.sqrt((w1_new - w1) ** 2 + (w2_new - w2) ** 2)[0]
-        print(e)
-        print(err)
+        w1_new = get_w1(w1, w2, X, y, k, C)
+        w2_new = get_w2(w1, w2, X, y, k, C)
+        e = np.sqrt((w1_new - w1) ** 2 + (w2_new - w2) ** 2)
         if  e <= err:
             break
         else:
