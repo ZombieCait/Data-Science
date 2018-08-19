@@ -31,14 +31,13 @@ def clustering(features, n_clusters=8):
     median_image = np.reshape(median_features, (w, h, d))
     imsave('images/median/parrots_' + str(n_clusters) + '.jpg', median_image)
     return mean_image, median_image
-    
-mean_image, median_image=clustering(features)
+
 #4. Измерьте качество получившейся сегментации с помощью метрики PSNR. 
 #Эту метрику нужно реализовать самостоятельно (см. определение).
 
-def psnr(img1, img2):
-    mse=np.mean((img1 - img2) ** 2)
-    return 10*math.log10(float(1.0)/mse)
+def psnr(image1, image2):
+    mse = np.mean((image1 - image2) ** 2)
+    return 10 * math.log10(float(1) / mse)
 
 #5. Найдите минимальное количество кластеров, при котором значение PSNR выше 20 
 #(можно рассмотреть не более 20 кластеров, но не забудьте рассмотреть оба способа 
@@ -47,7 +46,7 @@ for n in range(1, 21):
     mean_image, median_image=clustering(features, n)
     psnr_mean, psnr_median=psnr(float_image, mean_image), psnr(float_image, median_image)
     print(psnr_mean, psnr_median)
-    if (psnr_mean>20) | (psnr_median>20):
+    if (psnr_mean>20) or (psnr_median>20):
         open('1.txt', 'w').write(str(n))
         break
     
